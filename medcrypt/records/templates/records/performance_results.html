@@ -1,0 +1,340 @@
+<!-- records/templates/records/performance_results.html -->
+
+{% extends "records/base.html" %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Encryption/Decryption Time Chart
+        const timeCtx = document.getElementById('timeChart').getContext('2d');
+        const timeChart = new Chart(timeCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Encryption Time', 'Decryption Time'],
+                datasets: [{
+                    label: 'Time (seconds)',
+                    data: [{{ results.encryption_time|stringformat:".4f" }}, {{ results.decryption_time|stringformat:".4f" }}],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 99, 132, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Time (seconds)'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Throughput Chart
+        const throughputCtx = document.getElementById('throughputChart').getContext('2d');
+        const throughputChart = new Chart(throughputCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Encryption Throughput', 'Decryption Throughput'],
+                datasets: [{
+                    label: 'Throughput (bytes/second)',
+                    data: [{{ results.encryption_throughput|floatformat:2 }}, {{ results.decryption_throughput|floatformat:2 }}],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Bytes/Second'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Memory Usage Chart
+        const memoryCtx = document.getElementById('memoryChart').getContext('2d');
+        const memoryChart = new Chart(memoryCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Memory Usage'],
+                datasets: [{
+                    label: 'Memory (MB)',
+                    data: [{{ results.encryption_memory|floatformat:2 }}],
+                    backgroundColor: [
+                        'rgba(255, 159, 64, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Memory (MB)'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Entropy Chart
+        const entropyCtx = document.getElementById('entropyChart').getContext('2d');
+        const entropyChart = new Chart(entropyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Before Encryption', 'After Encryption'],
+                datasets: [{
+                    label: 'Entropy',
+                    data: [{{ results.entropy_before|floatformat:4 }}, {{ results.entropy_after|floatformat:4 }}],
+                    backgroundColor: [
+                        'rgba(201, 203, 207, 0.7)',
+                        'rgba(54, 162, 235, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(201, 203, 207, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Entropy Value'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Avalanche Effect Chart
+        const avalancheCtx = document.getElementById('avalancheChart').getContext('2d');
+        const avalancheChart = new Chart(avalancheCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Bits Changed', 'Bits Unchanged'],
+                datasets: [{
+                    data: [{{ results.avalanche_effect|floatformat:2 }}, {{ 100|subtract:results.avalanche_effect|floatformat:2 }}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Avalanche Effect: {{ results.avalanche_effect|floatformat:2 }}%'
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0">Performance Test Results</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Test Parameters</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <strong>Test Type:</strong> {{ test_type }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>File Size:</strong> {{ results.file_size|filesizeformat }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Summary</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <strong>Total Processing Time:</strong> 
+                                        {{ results.encryption_time|add:results.decryption_time|floatformat:4 }} seconds
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Average Throughput:</strong> 
+                                        {{ results.encryption_throughput|add:results.decryption_throughput|divide:2|floatformat:2 }} bytes/second
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Encryption/Decryption Time</h5>
+                                <div class="chart-container">
+                                    <canvas id="timeChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Throughput</h5>
+                                <div class="chart-container">
+                                    <canvas id="throughputChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Memory Usage</h5>
+                                <div class="chart-container">
+                                    <canvas id="memoryChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Entropy Comparison</h5>
+                                <div class="chart-container">
+                                    <canvas id="entropyChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Avalanche Effect</h5>
+                                <div class="chart-container">
+                                    <canvas id="avalancheChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Detailed Metrics</h5>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Metric</th>
+                                                <th>Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Encryption Time</td>
+                                                <td>{{ results.encryption_time|floatformat:4 }} seconds</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Decryption Time</td>
+                                                <td>{{ results.decryption_time|floatformat:4 }} seconds</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Encryption Throughput</td>
+                                                <td>{{ results.encryption_throughput|floatformat:2 }} bytes/second</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Decryption Throughput</td>
+                                                <td>{{ results.decryption_throughput|floatformat:2 }} bytes/second</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Memory Usage</td>
+                                                <td>{{ results.encryption_memory|floatformat:2 }} MB</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Avalanche Effect</td>
+                                                <td>{{ results.avalanche_effect|floatformat:2 }}%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Entropy Before</td>
+                                                <td>{{ results.entropy_before|floatformat:4 }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Entropy After</td>
+                                                <td>{{ results.entropy_after|floatformat:4 }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'performance_test' %}" class="btn btn-primary">
+                        <i class="bi bi-arrow-repeat me-2"></i>Run Another Test
+                    </a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-house me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

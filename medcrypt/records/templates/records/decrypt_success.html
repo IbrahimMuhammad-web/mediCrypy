@@ -1,0 +1,41 @@
+{% extends "records/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3 class="mb-0">Record Successfully Decrypted</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    The patient record has been successfully decrypted.
+                </div>
+                
+                <div class="decrypted-data">
+                    <h5>Patient Information</h5>
+                    <p><strong>Full Name:</strong> {{ patient_data.full_name }}</p>
+                    <p><strong>Age:</strong> {{ patient_data.age }}</p>
+                    <p><strong>Gender:</strong> {{ patient_data.gender }}</p>
+                    <p><strong>Blood Group:</strong> {{ patient_data.blood_group }}</p>
+                    
+                    <h5 class="mt-4">Medical Details</h5>
+                    <p><strong>Allergies:</strong> {{ patient_data.allergies }}</p>
+                    <p><strong>Diagnosis:</strong> {{ patient_data.diagnosis }}</p>
+                    <p><strong>Treatment Plan:</strong> {{ patient_data.treatment_plan }}</p>
+                    
+                    <h5 class="mt-4">Doctor's Notes</h5>
+                    <p>{{ patient_data.doctors_notes }}</p>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a href="{% url 'dashboard' %}" class="btn btn-primary">
+                        <i class="bi bi-house me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

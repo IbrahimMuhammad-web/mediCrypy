@@ -1,0 +1,62 @@
+{% extends "records/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3 class="mb-0">Record Successfully Encrypted</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    The patient record has been encrypted and embedded in the image file.
+                </div>
+                
+                <h4 class="mt-4">Download Options</h4>
+                <div class="d-flex gap-3 mb-4">
+                    <a href="{{ stego_url }}" download class="btn btn-primary">
+                        <i class="bi bi-download me-2"></i>Download Stego-Image
+                    </a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-house me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Private Key (Save This Securely)</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-danger">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            This private key is required to decrypt the record. Save it in a secure location.
+                            It will not be shown again.
+                        </p>
+                        <textarea class="form-control" rows="8" readonly>{{ private_key }}</textarea>
+                        <button onclick="copyToClipboard()" class="btn btn-outline-primary mt-3">
+                            <i class="bi bi-clipboard me-2"></i>Copy to Clipboard
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    To decrypt this record later, you'll need both the stego-image and this private key.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function copyToClipboard() {
+        const textarea = document.querySelector('textarea');
+        textarea.select();
+        document.execCommand('copy');
+        
+        // Show tooltip or alert
+        alert('Private key copied to clipboard!');
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends "records/base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2 class="mb-4">Welcome, {{ user.username }}</h2>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Medical Record Protection System</h4>
+                <p class="card-text">
+                    This system protects sensitive patient medical records using dual-layer encryption:
+                    first with RSA cryptography, then embedding the encrypted data into image files
+                    using LSB steganography for covert storage.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card dashboard-card">
+            <div class="card-header">
+                <h5 class="mb-0">Add Patient Record</h5>
+            </div>
+            <div class="card-body">
+                <p>Securely add a new patient medical record with dual-layer encryption.</p>
+                <a href="{% url 'add_record' %}" class="btn btn-primary">Add Record</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card dashboard-card">
+            <div class="card-header">
+                <h5 class="mb-0">Decrypt Record</h5>
+            </div>
+            <div class="card-body">
+                <p>Decrypt a patient record from a stego-image using your private key.</p>
+                <a href="{% url 'decrypt_record' %}" class="btn btn-primary">Decrypt Now</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card dashboard-card">
+            <div class="card-header">
+                <h5 class="mb-0">Performance Testing</h5>
+            </div>
+            <div class="card-body">
+                <p>Test encryption performance with different algorithms and settings.</p>
+                <a href="{% url 'performance_test' %}" class="btn btn-primary">Run Tests</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Recent Patient Records</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_records %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Patient Name</th>
+                                    <th>Age</th>
+                                    <th>Gender</th>
+                                    <th>Date Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in recent_records %}
+                                <tr>
+                                    <td>{{ record.patient_name }}</td>
+                                    <td>{{ record.age }}</td>
+                                    <td>{{ record.get_gender_display }}</td>
+                                    <td>{{ record.created_at|date:"M d, Y" }}</td>
+                                    <td>
+                                        <a href="{% url 'download_stego' record.stego_filename %}" class="btn btn-sm btn-outline-primary">
+                                            Download
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-end">
+                        <a href="{% url 'patient_records' %}" class="btn btn-primary">View All Records</a>
+                    </div>
+                {% else %}
+                    <p class="text-center">No patient records found. <a href="{% url 'add_record' %}">Add your first record</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

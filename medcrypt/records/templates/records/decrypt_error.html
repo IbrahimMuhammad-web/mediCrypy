@@ -1,0 +1,32 @@
+{% extends "records/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h3 class="mb-0">Decryption Failed</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    {{ error }}
+                </div>
+                
+                <p>Possible reasons:</p>
+                <ul>
+                    <li>The private key doesn't match the one used for encryption</li>
+                    <li>The stego-image was corrupted or modified</li>
+                    <li>The file is not a valid stego-image created by this system</li>
+                </ul>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a href="{% url 'decrypt_record' %}" class="btn btn-primary">
+                        <i class="bi bi-arrow-left me-2"></i>Try Again
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

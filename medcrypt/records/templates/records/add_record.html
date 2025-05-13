@@ -1,0 +1,25 @@
+{% extends "records/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">Add New Patient Record</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" class="medical-form">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-shield-lock me-2"></i>Encrypt and Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

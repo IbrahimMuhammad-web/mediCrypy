@@ -1,0 +1,100 @@
+{% extends "records/base.html" %}
+
+{% block content %}
+<div class="hero-section mb-5">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-4">Secure Medical Records with Dual-Layer Encryption</h1>
+        <p class="lead mb-5">Protect sensitive patient data using RSA cryptography and LSB steganography for maximum security</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{% url 'login' %}" class="btn btn-light btn-lg px-4">Login</a>
+            <a href="{% url 'signup' %}" class="btn btn-outline-light btn-lg px-4">Sign Up</a>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <div class="feature-icon">
+                    <i class="bi bi-shield-lock"></i>
+                </div>
+                <h3 class="card-title">RSA Encryption</h3>
+                <p class="card-text">Patient data is encrypted using 2048-bit RSA cryptography, ensuring confidentiality and integrity.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <div class="feature-icon">
+                    <i class="bi bi-image"></i>
+                </div>
+                <h3 class="card-title">LSB Steganography</h3>
+                <p class="card-text">Encrypted data is hidden within image files using LSB techniques for covert storage.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <div class="feature-icon">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h3 class="card-title">Performance Metrics</h3>
+                <p class="card-text">Monitor encryption performance with detailed metrics and analytics.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">How It Works</h3>
+            </div>
+            <div class="card-body">
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item border-0">Enter patient medical data in our secure form</li>
+                    <li class="list-group-item border-0">System generates RSA key pair and encrypts the data</li>
+                    <li class="list-group-item border-0">Encrypted data is embedded into a cover image</li>
+                    <li class="list-group-item border-0">Download the stego-image and private key for storage</li>
+                    <li class="list-group-item border-0">Decrypt later using the stego-image and private key</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">Security Features</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item border-0">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        Military-grade 2048-bit RSA encryption
+                    </li>
+                    <li class="list-group-item border-0">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        Steganographic concealment in image files
+                    </li>
+                    <li class="list-group-item border-0">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        Private key never stored on our servers
+                    </li>
+                    <li class="list-group-item border-0">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        Avalanche effect ensures data integrity
+                    </li>
+                    <li class="list-group-item border-0">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        User authentication and access control
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
